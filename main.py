@@ -10,7 +10,7 @@ import db, compliance, reports
 from auth import require_auth
 from reference_data import CERT_IN_INCIDENT_TYPES
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI(title="Prahari -- Breach Compliance Automation", dependencies=[Depends(require_auth)])
 
