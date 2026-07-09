@@ -11,7 +11,7 @@ CERT-In's own guidance is to submit with known fields filled and gaps
 explicitly marked, not to wait for a complete picture.
 """
 
-from app.reference_data import CERT_IN_TYPE_LABELS
+from reference_data import CERT_IN_TYPE_LABELS
 
 
 def _val(v, placeholder="Under investigation"):
