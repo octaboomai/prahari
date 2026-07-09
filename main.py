@@ -13,7 +13,12 @@ from reference_data import CERT_IN_INCIDENT_TYPES
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 app = FastAPI(title="Prahari -- Breach Compliance Automation", dependencies=[Depends(require_auth)])
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+
+# Mount static files only if the directory exists
+static_dir = BASE_DIR / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 db.init_db()
@@ -193,3 +198,4 @@ async def add_log_source(request: Request):
 def delete_log_source(source_id: int):
     db.delete_log_source(source_id)
     return RedirectResponse("/log-sources", status_code=303)
+
