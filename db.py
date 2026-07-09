@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 from datetime import datetime
 
-DB_PATH = Path(os.environ.get("PRAHARI_DB_PATH", str(Path(__file__).resolve().parent.parent / "prahari.db")))
-SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema.sql"
+DB_PATH = Path(os.environ.get("PRAHARI_DB_PATH", str(Path(__file__).resolve().parent / "prahari.db")))
+SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
 
 
 def get_conn():
@@ -153,3 +153,4 @@ def delete_log_source(source_id: int):
     conn.execute("DELETE FROM log_sources WHERE id = ?", (source_id,))
     conn.commit()
     conn.close()
+
