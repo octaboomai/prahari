@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime
 
 DB_PATH = Path(os.environ.get("PRAHARI_DB_PATH", str(Path(__file__).resolve().parent.parent / "prahari.db")))
-SCHEMA_PATH = Path(__file__).resolve().parent.parent / "schema.sql"
+SCHEMA_PATH = Path(__file__).resolve().parent / "schema.sql"
 
 
 def get_conn():
