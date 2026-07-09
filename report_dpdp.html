@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}DPDP report · Incident #{{ incident.id }}{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Incident #{{ incident.id }}</span>
+    <h1>DPDP Board {{ "initial notice" if tier == "initial" else "detailed report" }}</h1>
+  </div>
+  <a href="/incidents/{{ incident.id }}" class="btn btn-ghost btn-small">Back to incident</a>
+</div>
+
+<div class="report-actions">
+  <a href="/incidents/{{ incident.id }}/report/dpdp/{{ tier }}.txt" class="btn" download>Download .txt</a>
+</div>
+
+<div class="report-doc">
+  <h3>Data fiduciary</h3>
+  <div class="report-row"><div class="k">Organization</div><div>{{ report.data_fiduciary }}</div></div>
+  <div class="report-row"><div class="k">DPO / contact</div><div>{{ report.dpo_or_contact.name }} &middot; {{ report.dpo_or_contact.contact }} &middot; {{ report.dpo_or_contact.email }}</div></div>
+
+  <h3>Breach</h3>
+  <div class="report-row"><div class="k">Detected</div><div>{{ report.detection_datetime }}</div></div>
+  <div class="report-row"><div class="k">Nature of breach</div><div>{{ report.nature_of_breach }}</div></div>
+
+  {% if tier == "detailed" %}
+  <div class="report-row"><div class="k">Data categories affected</div><div>{{ report.data_categories_affected }}</div></div>
+  <div class="report-row"><div class="k">Est. individuals affected</div><div>{{ report.estimated_individuals_affected }}</div></div>
+  <div class="report-row"><div class="k">Likely consequences</div><div>{{ report.likely_consequences }}</div></div>
+  <div class="report-row"><div class="k">Mitigation measures</div><div>{{ report.mitigation_measures }}</div></div>
+  {% endif %}
+</div>
+
+<div class="note-box">{{ report.note }}</div>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% from "_clock_macros.html" import clock_card, badge_card %}
+{% block title %}Incident #{{ incident.id }}{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Incident #{{ incident.id }} &middot; <span class="status-pill {{ incident.status }}">{{ incident.status.replace('_', ' ') }}</span></span>
+    <h1>
+      {% if incident.incident_types %}
+        {{ type_labels.get(incident.incident_types[0], incident.incident_types[0]) }}{% if incident.incident_types|length > 1 %} +{{ incident.incident_types|length - 1 }} more{% endif %}
+      {% else %}
+        Untitled incident
+      {% endif %}
+    </h1>
+  </div>
+  {% if incident.status != 'closed' %}
+  <form method="post" action="/incidents/{{ incident.id }}/close" onsubmit="return confirm('Close this incident? Do this only once both reports are actually filed.');">
+    <button type="submit" class="btn btn-ghost btn-small">Close incident</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="form-section">
+  <h2>Compliance clocks</h2>
+  <div class="clock-pair">
+    {{ clock_card("CERT-IN · REPORT WITHIN 6H", clocks.cert_in, mark_url="/incidents/" ~ incident.id ~ "/mark/cert_in") }}
+    {{ clock_card("DPBI · DETAILED REPORT WITHIN 72H", clocks.dpdp_detailed, mark_url="/incidents/" ~ incident.id ~ "/mark/dpdp_detailed") }}
+  </div>
+  <div class="clock-pair" style="margin-top: 0.85rem; grid-template-columns: 1fr;">
+    {{ badge_card("DPBI · INITIAL NOTICE (WITHOUT DELAY)", clocks.dpdp_initial, mark_url="/incidents/" ~ incident.id ~ "/mark/dpdp_initial") }}
+  </div>
+</div>
+
+<div class="form-section">
+  <h2>Generate reports</h2>
+  <div class="report-actions">
+    <a href="/incidents/{{ incident.id }}/report/cert-in" class="btn">CERT-In report</a>
+    <a href="/incidents/{{ incident.id }}/report/dpdp/initial" class="btn">DPDP initial notice</a>
+    <a href="/incidents/{{ incident.id }}/report/dpdp/detailed" class="btn">DPDP detailed report</a>
+  </div>
+</div>
+
+<div class="form-section">
+  <h2>Incident record</h2>
+  <div class="report-doc">
+    <div class="report-row"><div class="k">Detected</div><div>{{ clocks.detected.strftime('%d %b %Y, %H:%M') }}</div></div>
+    <div class="report-row"><div class="k">Occurred</div><div>{{ incident.occurrence_datetime or "Unknown" }}</div></div>
+    <div class="report-row"><div class="k">Incident type(s)</div><div>{% for t in incident.incident_types %}{{ type_labels.get(t, t) }}{% if not loop.last %}, {% endif %}{% endfor %}</div></div>
+    <div class="report-row"><div class="k">Affected system</div><div>{{ incident.domain_url or incident.ip_address or "Not specified" }}</div></div>
+    <div class="report-row"><div class="k">Location</div><div>{{ [incident.location_city, incident.location_region, incident.location_country] | select | join(', ') }}</div></div>
+    <div class="report-row"><div class="k">Description</div><div>{{ incident.description or "Not yet recorded" }}</div></div>
+    <div class="report-row"><div class="k">Data categories affected</div><div>{{ incident.data_categories_affected or "None recorded" }}</div></div>
+    <div class="report-row"><div class="k">Est. individuals affected</div><div>{{ incident.estimated_individuals_affected or "Unknown" }}</div></div>
+  </div>
+</div>
+
+{% endblock %}

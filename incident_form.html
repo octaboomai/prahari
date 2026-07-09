@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Log incident{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Fill what you know now &mdash; mark the rest "under investigation"</span>
+    <h1>Log a new incident</h1>
+  </div>
+</div>
+
+<form method="post" action="/incidents">
+
+  <div class="form-section">
+    <h2>Timing &mdash; this starts both clocks</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Detected on <span class="hint">(when you noticed it &mdash; not when it happened)</span></label>
+        <input type="datetime-local" name="detection_datetime" value="{{ now }}" required>
+      </div>
+      <div class="field">
+        <label>Occurred on <span class="hint">(if known)</span></label>
+        <input type="datetime-local" name="occurrence_datetime">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Reporter &amp; affected entity</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Reporting as</label>
+        <div class="radio-row">
+          <label><input type="radio" name="reporter_role" value="affected_entity" checked> Affected entity</label>
+          <label><input type="radio" name="reporter_role" value="reporting_for_other"> Reporting on behalf of another entity</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Affected entity name <span class="hint">(leave blank if it's your own org)</span></label>
+        <input type="text" name="affected_entity_name" placeholder="e.g. Your Company Pvt Ltd">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Incident type(s) <span class="hint">&mdash; CERT-In Annexure I categories</span></h2>
+    <div class="checkbox-grid">
+      {% for code, label in incident_types %}
+      <label class="checkbox-row">
+        <input type="checkbox" name="incident_types" value="{{ code }}">
+        {{ label }}
+      </label>
+      {% endfor %}
+    </div>
+    <div class="field" style="margin-top: 0.75rem;">
+      <label>If "Other", specify</label>
+      <input type="text" name="incident_type_other">
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Criticality</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Is the affected system critical to your operations?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="is_critical_system" value="yes"> Yes</label>
+          <label><input type="radio" name="is_critical_system" value="no" checked> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Brief details</label>
+        <input type="text" name="critical_details">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Affected system</h2>
+    <div class="form-grid">
+      <div class="field"><label>Domain / URL</label><input type="text" name="domain_url"></div>
+      <div class="field"><label>IP address</label><input type="text" name="ip_address"></div>
+      <div class="field"><label>Operating system</label><input type="text" name="operating_system"></div>
+      <div class="field"><label>Make / model / cloud provider</label><input type="text" name="make_model_cloud"></div>
+      <div class="field"><label>Affected application</label><input type="text" name="affected_application"></div>
+      <div class="field"><label>Network / ISP</label><input type="text" name="network_isp"></div>
+      <div class="field"><label>City</label><input type="text" name="location_city"></div>
+      <div class="field"><label>State / region</label><input type="text" name="location_region"></div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Description</h2>
+    <div class="form-grid single">
+      <div class="field">
+        <label>What happened, as you understand it right now</label>
+        <textarea name="description" placeholder="Plain language is fine -- mark anything unconfirmed as such."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h2>Personal data involved? <span class="hint">&mdash; fills the DPDP Board report if so</span></h2>
+    <div class="form-grid">
+      <div class="field span-2">
+        <label>Categories of data likely affected</label>
+        <input type="text" name="data_categories_affected" placeholder="e.g. employee names and bank details, customer contact info">
+      </div>
+      <div class="field">
+        <label>Estimated individuals affected</label>
+        <input type="number" name="estimated_individuals_affected" min="0">
+      </div>
+      <div class="field">
+        <label>Likely consequences</label>
+        <input type="text" name="likely_consequences">
+      </div>
+      <div class="field span-2">
+        <label>Mitigation measures taken or proposed</label>
+        <textarea name="mitigation_measures"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn">Log incident &amp; start clocks</button>
+    <a href="/" class="btn btn-ghost">Cancel</a>
+  </div>
+
+</form>
+
+{% endblock %}

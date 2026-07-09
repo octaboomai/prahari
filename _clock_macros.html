@@ -1,0 +1,40 @@
+{% macro clock_card(label, clock, mark_url=None, due_label="Due") %}
+<div class="clock {{ 'status-reported' if clock.status == 'reported' else 'status-' + clock.status }}"
+     {% if clock.status != 'reported' %}
+     data-clock-deadline="{{ clock.deadline.isoformat() }}"
+     data-clock-total-seconds="{{ clock.total_seconds }}"
+     {% endif %}>
+  <div class="clock-label">{{ label }}</div>
+  {% if clock.status == 'reported' %}
+    <div class="clock-time clock-time--static">Reported</div>
+    <div class="clock-meta">{{ clock.reported_at.strftime('%d %b, %H:%M') }} &middot; {{ 'on time' if clock.on_time else 'past deadline' }}</div>
+  {% else %}
+    <div class="clock-time">--:--:--</div>
+    <div class="clock-bar"><div class="clock-bar-fill"></div></div>
+    <div class="clock-meta">{{ due_label }} {{ clock.deadline.strftime('%d %b, %H:%M') }}</div>
+  {% endif %}
+  {% if mark_url and clock.status != 'reported' %}
+  <form method="post" action="{{ mark_url }}" class="clock-mark-form">
+    <button type="submit" class="btn-mark">Mark reported</button>
+  </form>
+  {% endif %}
+</div>
+{% endmacro %}
+
+{% macro badge_card(label, state, mark_url=None) %}
+<div class="clock {{ 'status-reported' if state.status == 'reported' else 'status-duenow' }}">
+  <div class="clock-label">{{ label }}</div>
+  {% if state.status == 'reported' %}
+    <div class="clock-time clock-time--static">Reported</div>
+    <div class="clock-meta">{{ state.reported_at.strftime('%d %b, %H:%M') }}</div>
+  {% else %}
+    <div class="clock-time clock-time--static">Due now</div>
+    <div class="clock-meta">No fixed hour count &mdash; notify immediately</div>
+  {% endif %}
+  {% if mark_url and state.status != 'reported' %}
+  <form method="post" action="{{ mark_url }}" class="clock-mark-form">
+    <button type="submit" class="btn-mark">Mark reported</button>
+  </form>
+  {% endif %}
+</div>
+{% endmacro %}

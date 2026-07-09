@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Retention{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">CERT-In wants 180 days &middot; DPDP wants 365 &middot; build for {{ unified_days }} and both are satisfied</span>
+    <h1>Log retention</h1>
+  </div>
+</div>
+
+<div class="form-section">
+  <h2>Add a log source</h2>
+  <form method="post" action="/log-sources">
+    <div class="form-grid">
+      <div class="field"><label>Name</label><input type="text" name="name" placeholder="e.g. ERP server, firewall, email gateway" required></div>
+      <div class="field"><label>Continuous logging started on</label><input type="date" name="monitoring_start_date" value="{{ today }}" required></div>
+      <div class="field span-2"><label>Notes</label><input type="text" name="notes"></div>
+    </div>
+    <div class="form-actions"><button type="submit" class="btn">Add source</button></div>
+  </form>
+</div>
+
+<div class="form-section">
+  <h2>Sources tracked</h2>
+  {% if sources|length == 0 %}
+  <div class="empty-state">No log sources tracked yet. Add every system whose logs you'd need to hand CERT-In alongside an incident report.</div>
+  {% else %}
+  <table>
+    <thead><tr><th>Source</th><th>Logging since</th><th>Days running</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+      {% for s in sources %}
+      <tr>
+        <td>{{ s.name }}</td>
+        <td>{{ s.monitoring_start_date }}</td>
+        <td>{{ s.days_running }}</td>
+        <td>
+          {% if s.compliant %}
+            <span class="tag-ok">Compliant</span>
+          {% else %}
+            <span class="tag-pending">{{ s.days_until_compliant }} days to go</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="post" action="/log-sources/{{ s.id }}/delete" onsubmit="return confirm('Remove this source from tracking?');">
+            <button type="submit" class="btn btn-ghost btn-small">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+
+{% endblock %}

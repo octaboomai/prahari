@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}CERT-In report · Incident #{{ incident.id }}{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">Incident #{{ incident.id }}</span>
+    <h1>CERT-In incident report</h1>
+  </div>
+  <a href="/incidents/{{ incident.id }}" class="btn btn-ghost btn-small">Back to incident</a>
+</div>
+
+<div class="report-actions">
+  <a href="/incidents/{{ incident.id }}/report/cert-in.txt" class="btn" download>Download .txt</a>
+</div>
+
+<div class="report-doc">
+  <h3>Reporter</h3>
+  <div class="report-row"><div class="k">Name / role</div><div>{{ report.reporter.name }} &middot; {{ report.reporter.role_title }}</div></div>
+  <div class="report-row"><div class="k">Organization</div><div>{{ report.reporter.organization_name }}</div></div>
+  <div class="report-row"><div class="k">Contact no.</div><div>{{ report.reporter.contact_no }}</div></div>
+  <div class="report-row"><div class="k">Email</div><div>{{ report.reporter.email }}</div></div>
+  <div class="report-row"><div class="k">Address</div><div>{{ report.reporter.address }}</div></div>
+
+  <h3>Affected entity</h3>
+  <div class="report-row"><div class="k">Entity</div><div>{{ report.affected_entity }}</div></div>
+
+  <h3>Incident type(s)</h3>
+  <div class="report-row"><div class="k">Category</div><div>{{ report.incident_types | join(', ') }}</div></div>
+  {% if report.incident_type_other %}
+  <div class="report-row"><div class="k">Other</div><div>{{ report.incident_type_other }}</div></div>
+  {% endif %}
+
+  <h3>Criticality</h3>
+  <div class="report-row"><div class="k">Critical to mission</div><div>{{ report.is_critical_system }}</div></div>
+  {% if report.critical_details %}
+  <div class="report-row"><div class="k">Details</div><div>{{ report.critical_details }}</div></div>
+  {% endif %}
+
+  <h3>Affected system</h3>
+  <div class="report-row"><div class="k">Domain / URL</div><div>{{ report.affected_system.domain_url }}</div></div>
+  <div class="report-row"><div class="k">IP address</div><div>{{ report.affected_system.ip_address }}</div></div>
+  <div class="report-row"><div class="k">Operating system</div><div>{{ report.affected_system.operating_system }}</div></div>
+  <div class="report-row"><div class="k">Make / model / cloud</div><div>{{ report.affected_system.make_model_cloud }}</div></div>
+  <div class="report-row"><div class="k">Application</div><div>{{ report.affected_system.affected_application }}</div></div>
+  <div class="report-row"><div class="k">Location</div><div>{{ report.affected_system.location }}</div></div>
+  <div class="report-row"><div class="k">Network / ISP</div><div>{{ report.affected_system.network_isp }}</div></div>
+
+  <h3>Timing</h3>
+  <div class="report-row"><div class="k">Occurred</div><div>{{ report.occurrence_datetime }}</div></div>
+  <div class="report-row"><div class="k">Detected</div><div>{{ report.detection_datetime }}</div></div>
+
+  <h3>Description</h3>
+  <div class="report-row"><div class="k">Summary</div><div>{{ report.description }}</div></div>
+
+  <h3>Submit to</h3>
+  <div class="report-row"><div class="k">Email</div><div>{{ report.submit_to.email }}</div></div>
+  <div class="report-row"><div class="k">Phone</div><div>{{ report.submit_to.phone }}</div></div>
+  <div class="report-row"><div class="k">Post</div><div>{{ report.submit_to.address }}</div></div>
+</div>
+
+<div class="note-box">
+  Fields marked "Under investigation" are gaps, not blockers &mdash; CERT-In's own guidance
+  is to submit with known fields filled and unknowns explicitly marked, rather than wait
+  for a complete picture. This is a draft for your review, not a submission-ready filing
+  &mdash; check every field before sending.
+</div>
+
+{% endblock %}

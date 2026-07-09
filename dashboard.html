@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_clock_macros.html" import clock_card %}
+{% block title %}Incidents{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <span class="eyebrow">{{ open_count }} open · one incident, two regulators</span>
+    <h1>Incidents</h1>
+  </div>
+  <a href="/incidents/new" class="btn">Log new incident</a>
+</div>
+
+{% if rows|length == 0 %}
+<div class="empty-state">
+  Nothing logged yet. The moment you notice something, log it here &mdash;
+  that's the timestamp both clocks start counting from, so it's worth
+  doing before you've finished investigating, not after.
+</div>
+{% else %}
+{% for r in rows %}
+{% set i = r.incident %}
+{% set c = r.clocks %}
+<a class="incident-row" href="/incidents/{{ i.id }}">
+  <div>
+    <div class="incident-title">
+      {% if i.incident_types %}{{ type_labels.get(i.incident_types[0], i.incident_types[0]) }}{% else %}{{ i.affected_entity_name or "Untitled incident" }}{% endif %}
+      #{{ i.id }}
+    </div>
+    <div class="incident-sub">Detected {{ c.detected.strftime('%d %b %Y, %H:%M') }}</div>
+    <span class="status-pill {{ i.status }}">{{ i.status.replace('_', ' ') }}</span>
+  </div>
+  <div class="clock-pair compact">
+    {{ clock_card("CERT-IN · 6H", c.cert_in) }}
+    {{ clock_card("DPBI · 72H", c.dpdp_detailed) }}
+  </div>
+  <div></div>
+</a>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
