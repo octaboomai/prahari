@@ -1,0 +1,445 @@
+/* ============================================================
+   PRAHARI -- design tokens
+   Subject: two legal clocks (CERT-In 6h, DPDP 72h) ticking on
+   the same breach. The signature element is the twin countdown
+   clock -- everything else stays quiet so that reads clearly.
+   ============================================================ */
+
+:root {
+  --ink: #12182B;
+  --panel: #1B2340;
+  --panel-2: #232C50;
+  --paper: #FAFAF8;
+  --paper-dim: #EFEDE4;
+  --line: #DAD6C9;
+  --line-dark: #34406B;
+
+  --text: #1B2340;
+  --text-muted: #6B6F80;
+  --text-on-dark: #EFEEE6;
+  --text-on-dark-muted: #9BA3C4;
+
+  --ok: #3E7C6B;
+  --ok-bg: #E4EFEA;
+  --warning: #C9822C;
+  --warning-bg: #F7ECD9;
+  --critical: #B23B32;
+  --critical-bg: #F6E1DE;
+  --reported: #4C5B8C;
+  --reported-bg: #E7E9F2;
+
+  --radius: 3px;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  background: var(--paper);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  background: var(--ink);
+  color: var(--text-on-dark);
+  padding: 0.9rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.wordmark {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--text-on-dark);
+}
+
+.wordmark span {
+  color: var(--warning);
+}
+
+.topbar nav {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.topbar nav a {
+  text-decoration: none;
+  color: var(--text-on-dark-muted);
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+}
+
+.topbar nav a:hover, .topbar nav a.active {
+  color: var(--text-on-dark);
+  border-bottom-color: var(--warning);
+}
+
+/* ---------- layout ---------- */
+
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.25rem 1.75rem 4rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+
+.page-header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.page-header .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--text-on-dark);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover { background: var(--panel-2); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.btn-ghost:hover { border-color: var(--ink); }
+
+.btn-small {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+}
+
+/* ---------- twin clock component (the signature element) ---------- */
+
+.clock-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+}
+
+.clock-pair.compact {
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.clock {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  background: #fff;
+}
+
+.compact .clock { padding: 0.55rem 0.7rem; }
+
+.clock-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.clock-time {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.compact .clock-time { font-size: 1.1rem; }
+
+.clock-time--static { font-size: 1.15rem; }
+.compact .clock-time--static { font-size: 0.95rem; }
+
+.clock-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.clock-bar {
+  height: 4px;
+  background: var(--paper-dim);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 0.55rem;
+}
+
+.clock-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--ok);
+  transition: width 1s linear, background-color 0.4s;
+}
+
+.clock.status-ok .clock-time { color: var(--ok); }
+.clock.status-ok .clock-bar-fill { background: var(--ok); }
+
+.clock.status-warning .clock-time { color: var(--warning); }
+.clock.status-warning .clock-bar-fill { background: var(--warning); }
+
+.clock.status-critical .clock-time,
+.clock.status-breached .clock-time { color: var(--critical); }
+.clock.status-critical .clock-bar-fill,
+.clock.status-breached .clock-bar-fill { background: var(--critical); }
+.clock.status-breached { background: var(--critical-bg); }
+
+.clock.status-reported {
+  background: var(--reported-bg);
+  border-color: var(--reported);
+}
+.clock.status-reported .clock-time--static { color: var(--reported); }
+
+.clock.status-duenow {
+  background: var(--warning-bg);
+  border-color: var(--warning);
+}
+.clock.status-duenow .clock-time--static { color: var(--warning); }
+
+.clock-mark-form { margin-top: 0.6rem; }
+.btn-mark {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 1px solid var(--line-dark);
+  background: transparent;
+  color: var(--text-muted);
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.btn-mark:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ---------- dashboard incident rows ---------- */
+
+.incident-row {
+  display: grid;
+  grid-template-columns: 2.1fr 1.4fr auto;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+
+.incident-row:hover { background: var(--paper-dim); }
+
+.incident-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+}
+
+.incident-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.status-pill {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.status-pill.open { background: var(--warning-bg); color: var(--warning); }
+.status-pill.partially_reported { background: var(--reported-bg); color: var(--reported); }
+.status-pill.fully_reported { background: var(--ok-bg); color: var(--ok); }
+.status-pill.closed { background: var(--paper-dim); color: var(--text-muted); }
+
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+}
+
+/* ---------- forms ---------- */
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.25rem;
+}
+
+.form-grid.single { grid-template-columns: 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field.span-2 { grid-column: span 2; }
+
+label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+label .hint {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+input[type=text], input[type=datetime-local], input[type=date],
+input[type=number], textarea, select {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+}
+
+textarea { resize: vertical; min-height: 4.5rem; }
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.checkbox-row input { margin-top: 0.2rem; }
+
+.radio-row { display: flex; gap: 1.5rem; }
+.radio-row label { display: flex; align-items: center; gap: 0.4rem; font-weight: 400; }
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+
+/* ---------- report view ---------- */
+
+.report-doc {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  font-size: 0.88rem;
+}
+
+.report-doc h3 {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 1.5rem 0 0.6rem;
+}
+
+.report-doc h3:first-child { margin-top: 0; }
+
+.report-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--paper-dim);
+  font-size: 0.85rem;
+}
+
+.report-row .k { color: var(--text-muted); }
+
+.report-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.note-box {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+/* ---------- tables (log sources) ---------- */
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); }
+th { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+
+.tag-ok { color: var(--ok); font-weight: 600; }
+.tag-pending { color: var(--warning); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .form-grid, .checkbox-grid { grid-template-columns: 1fr; }
+  .field.span-2 { grid-column: span 1; }
+  .incident-row { grid-template-columns: 1fr; gap: 0.5rem; }
+  .clock-pair { grid-template-columns: 1fr; }
+}
