@@ -6,9 +6,9 @@ from fastapi.responses import RedirectResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app import db, compliance, reports
-from app.auth import require_auth
-from app.reference_data import CERT_IN_INCIDENT_TYPES
+import db, compliance, reports
+from auth import require_auth
+from reference_data import CERT_IN_INCIDENT_TYPES
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
