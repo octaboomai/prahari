@@ -1,18 +1,17 @@
 from datetime import datetime
 from pathlib import Path
 
-from fastapi import FastAPI, Request, Form, Depends
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import RedirectResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 import db, compliance, reports
-from auth import require_auth
 from reference_data import CERT_IN_INCIDENT_TYPES
 
 BASE_DIR = Path(__file__).resolve().parent
 
-app = FastAPI(title="Prahari -- Breach Compliance Automation", dependencies=[Depends(require_auth)])
+app = FastAPI(title="Prahari -- Breach Compliance Automation")
 
 # Mount static files only if the directory exists
 static_dir = BASE_DIR / "static"
@@ -198,4 +197,5 @@ async def add_log_source(request: Request):
 def delete_log_source(source_id: int):
     db.delete_log_source(source_id)
     return RedirectResponse("/log-sources", status_code=303)
+
 
