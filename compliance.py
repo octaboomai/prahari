@@ -93,6 +93,31 @@ def compute_clocks(incident: dict, now: datetime = None) -> dict:
         "reported_at": _parse(dpdp_initial_reported) if dpdp_initial_reported else None,
     }
 
+    # If the incident has been explicitly closed, treat all clocks as reported.
+    # This stops client-side setInterval timers from continuing to display an
+    # active countdown after the user has closed the incident in the UI.
+    if incident.get("status") == "closed":
+        reported_at = now
+        cert_in = {
+            "status": "reported",
+            "deadline": cert_in_deadline,
+            "reported_at": reported_at,
+            "on_time": reported_at <= cert_in_deadline,
+            "remaining_seconds": None,
+            "total_seconds": CERT_IN_WINDOW_HOURS * 3600,
+            "pct_remaining": None,
+        }
+        dpdp_detailed = {
+            "status": "reported",
+            "deadline": dpdp_detailed_deadline,
+            "reported_at": reported_at,
+            "on_time": reported_at <= dpdp_detailed_deadline,
+            "remaining_seconds": None,
+            "total_seconds": DPDP_DETAILED_WINDOW_HOURS * 3600,
+            "pct_remaining": None,
+        }
+        dpdp_initial = {"status": "reported", "reported_at": reported_at}
+
     return {
         "detected": detected,
         "cert_in": cert_in,
