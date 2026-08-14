@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prahari — Breach Compliance Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #ddd;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ff6b6b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .highlight strong {
+            color: #d32f2f;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d32f2f;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 1rem;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .timeline {
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .timeline-item {
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #667eea;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .tech-item {
+            background: #f4f4f4;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .compliance-clocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .clock-card {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0e6ff 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #667eea;
+        }
+
+        .clock-card h4 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .clock-time {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #d32f2f;
+            margin: 0.5rem 0;
+        }
+
+        .clock-desc {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .responsive-table {
+            width: 100%;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🛡️ Prahari</h1>
+        <p>Breach Compliance Automation for Indian SMEs</p>
+    </header>
+
+    <div class="container">
+        <!-- Introduction Section -->
+        <section>
+            <h2>What is Prahari?</h2>
+            <p>Prahari is a specialized compliance automation platform designed for Small and Medium Enterprises (SMEs) in India. It transforms incident detection into correctly-timed, correctly-formatted regulatory filings for two critical regulators:</p>
+            
+            <div class="compliance-clocks">
+                <div class="clock-card">
+                    <h4>🇮🇳 CERT-In</h4>
+                    <div class="clock-time">6 Hours</div>
+                    <div class="clock-desc">Initial incident notification deadline</div>
+                </div>
+                <div class="clock-card">
+                    <h4>📋 DPDP Board</h4>
+                    <div class="clock-time">72 Hours</div>
+                    <div class="clock-desc">Detailed breach report deadline</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 1.5rem;">Prahari handles the dual-clock compliance workflow—the one component nobody else is selling to the Indian SME segment.</p>
+        </section>
+
+        <!-- Key Features Section -->
+        <section>
+            <h2>✨ Core Features</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h4>📝 Incident Intake</h4>
+                    <p>Modeled on CERT-In's official Incident Reporting Form with all DPDP breach-notification fields built in.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>⏱️ Dual-Clock Engine</h4>
+                    <p>Computes both CERT-In (6h) and DPDP (72h) deadlines from a single detection timestamp with urgency banding.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📊 Live Dashboard</h4>
+                    <p>Twin countdown clocks ticking client-side in real-time with color-shifts as deadlines approach.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📄 Report Generation</h4>
+                    <p>Renders both CERT-In and DPDP Board reports (initial + detailed) as HTML or downloadable text.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📋 Audit Trail</h4>
+                    <p>Mark-as-reported timestamps prove on-time vs. late filing for regulatory compliance verification.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔍 Retention Tracking</h4>
+                    <p>Tracks log source monitoring duration against 365-day window (satisfies both CERT-In and DPDP requirements).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Built vs Out of Scope -->
+        <section>
+            <h2>🎯 What's Built | What's Not</h2>
+            
+            <h3>✅ Built Here</h3>
+            <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                <li>Dual-clock compliance engine (core IP)</li>
+                <li>Incident intake form & report generation</li>
+                <li>Live countdown dashboard</li>
+                <li>Audit trail for filing verification</li>
+                <li>Log source retention tracking</li>
+            </ul>
+
+            <h3>❌ Out of Scope (Integrate Instead)</h3>
+            <div class="highlight">
+                <strong>Prahari deliberately does NOT build:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li><strong>Dark-web/credential monitoring</strong> — Integrate via Flare's TEM platform</li>
+                    <li><strong>External attack-surface scanning</strong> — Use Shodan or Censys API</li>
+                    <li><strong>Multi-tenancy</strong> — Schema is single-org; designed for easy migration</li>
+                    <li><strong>Real multi-user auth</strong> — HTTP Basic Auth is sufficient for single org</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Getting Started -->
+        <section>
+            <h2>🚀 Getting Started</h2>
+            
+            <h3>Local Development</h3>
+            <p>Run Prahari on your local machine:</p>
+            <pre style="background: #f4f4f4; padding: 1rem; border-radius: 5px; overflow-x: auto;"><code>python3 -m venv venv
+source venv/bin/activate       # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+export PRAHARI_USER=yourname
+export PRAHARI_PASSWORD=yourpassword
+uvicorn app.main:app --reload --port 8000</code></pre>
+            <p style="margin-top: 1rem;">Then open <code>http://localhost:8000</code> and log in with your credentials.</p>
+
+            <h3>Deploy to Production</h3>
+            <p><strong>Recommended: Railway (railway.com)</strong></p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>1. Push to GitHub</strong> — Create a new GitHub repo with this code
+                </div>
+                <div class="timeline-item">
+                    <strong>2. Connect Railway</strong> — New Project → Deploy from GitHub repo
+                </div>
+                <div class="timeline-item">
+                    <strong>3. Set Environment Variables</strong>
+                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                        <li><code>PRAHARI_USER</code> — Your username</li>
+                        <li><code>PRAHARI_PASSWORD</code> — A real password</li>
+                        <li><code>PRAHARI_DB_PATH</code> — `/data/prahari.db`</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <strong>4. Attach Volume</strong> — Mount `/data` volume for persistent SQLite storage
+                </div>
+                <div class="timeline-item">
+                    <strong>5. Go Live</strong> — Railway provides `*.up.railway.app` URL immediately
+                </div>
+            </div>
+            <p style="margin-top: 1rem;"><strong>Cost:</strong> ~$5/month on Railway Hobby plan after free trial</p>
+        </section>
+
+        <!-- Project Structure -->
+        <section>
+            <h2>📁 Project Layout</h2>
+            
+            <div class="responsive-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File/Folder</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Procfile</code></td>
+                            <td>Start command for Railway/Render/Heroku-style hosts</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/main.py</code></td>
+                            <td>FastAPI routes and application logic</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/auth.py</code></td>
+                            <td>HTTP Basic Auth gate</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/db.py</code></td>
+                            <td>SQLite database access</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/compliance.py</code></td>
+                            <td><strong>Core IP:</strong> Dual-clock engine</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/reports.py</code></td>
+                            <td>CERT-In & DPDP report generation</td>
+                        </tr>
+                        <tr>
+                            <td><code>app/reference_data.py</code></td>
+                            <td>CERT-In's official incident category list</td>
+                        </tr>
+                        <tr>
+                            <td><code>templates/</code></td>
+                            <td>Jinja2 server-rendered templates</td>
+                        </tr>
+                        <tr>
+                            <td><code>static/</code></td>
+                            <td>CSS + JavaScript for live countdown clocks</td>
+                        </tr>
+                        <tr>
+                            <td><code>schema.sql</code></td>
+                            <td>SQLite schema (Postgres-portable)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section>
+            <h2>🛠️ Technology Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-item">Python (44%)</div>
+                <div class="tech-item">HTML (37%)</div>
+                <div class="tech-item">CSS (16%)</div>
+                <div class="tech-item">JavaScript (3%)</div>
+                <div class="tech-item">FastAPI</div>
+                <div class="tech-item">SQLite</div>
+                <div class="tech-item">Jinja2</div>
+            </div>
+        </section>
+
+        <!-- Roadmap -->
+        <section>
+            <h2>🗺️ Roadmap</h2>
+            <p>Suggested next steps for development:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>Phase 1: Multi-Org Support</strong><br>
+                    Add per-org login and <code>org_id</code> migration for multiple paying customers
+                </div>
+                <div class="timeline-item">
+                    <strong>Phase 2: External Integrations</strong><br>
+                    Wire in Flare's API for dark-web/credential monitoring and Shodan/Censys for exposure scanning
+                </div>
+                <div class="timeline-item">
+                    <strong>Phase 3: Automated Filing</strong><br>
+                    Direct CERT-In and DPDP Board submission channels (email/portal) instead of manual filing
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Note -->
+        <section>
+            <h2>🔐 Security & Auth</h2>
+            <p>Every route is gated behind HTTP Basic Auth. Set these environment variables before production deployment:</p>
+            <div style="background: #f4f4f4; padding: 1rem; border-radius: 5px; margin: 1rem 0;">
+                <code>PRAHARI_USER=yourname</code><br>
+                <code>PRAHARI_PASSWORD=something-real-not-changeme</code>
+            </div>
+            <div class="highlight">
+                <strong>⚠️ Default Credentials</strong><br>
+                Locally falls back to <code>admin</code> / <code>changeme</code> with console warning. <strong>Never use defaults in production.</strong>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white; border-bottom: none;">Ready to Automate Compliance?</h2>
+            <p>Deploy Prahari to Railway and get live compliance clocks running in minutes.</p>
+            <a href="https://railway.com" class="cta-button" style="background: white; color: #667eea;">
+                Deploy to Railway
+            </a>
+            <a href="https://github.com/octaboomai/prahari" class="cta-button" style="background: rgba(255, 255, 255, 0.2); border: 2px solid white;">
+                View on GitHub
+            </a>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <strong>Prahari</strong> — Breach Compliance Automation</p>
+        <p>For Indian SMEs | Built with ❤️ by <a href="https://github.com/octaboomai">@octaboomai</a></p>
+        <p><a href="https://github.com/octaboomai/prahari">View Repository</a></p>
+    </footer>
+</body>
+</html>
