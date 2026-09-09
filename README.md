@@ -1,5 +1,11 @@
 # Prahari — breach compliance automation
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-Framework-000000.svg)](https://flask.palletsprojects.com/)
+[![CERT-In](https://img.shields.io/badge/Compliance-CERT--In-FF9933.svg)](https://www.cert-in.org.in/)
+[![DPDP](https://img.shields.io/badge/Compliance-DPDP-138808.svg)](https://www.meity.gov.in/data-protection-framework)
+
 This is the piece of the SME cyber-defense product that's actually worth building
 from scratch: the layer that turns one detected incident into two correctly-timed,
 correctly-formatted regulatory filings — CERT-In (6-hour clock) and the DPDP Board
@@ -12,6 +18,10 @@ credential/dark-web monitoring, Shodan/Censys for exposure scanning) rather than
 re-implementing years of threat-intel infrastructure. This repo is the one
 component nobody else is selling to the Indian SME segment: the dual-regulator
 compliance workflow itself.
+
+<!-- TODO: Add screenshots of the live dashboard and generated reports here -->
+<!-- ![Dashboard](docs/dashboard.png) -->
+<!-- ![CERT-In Report](docs/cert-in-report.png) -->
 
 ## What's actually built
 
@@ -62,7 +72,7 @@ variables before running anywhere other than your own machine:
 
 ```
 PRAHARI_USER=yourname
-PRAHARI_PASSWORD=something-real-not-changeme
+PRAHARI_PASSWORD=something-real-not-change-me
 ```
 
 If left unset, it falls back to `admin` / `changeme` locally and prints a
@@ -73,7 +83,7 @@ deploying.
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate       # Windows: venv\Scripts\activate
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 export PRAHARI_USER=yourname            # Windows (PowerShell): $env:PRAHARI_USER="yourname"
 export PRAHARI_PASSWORD=yourpassword    # Windows (PowerShell): $env:PRAHARI_PASSWORD="yourpassword"
@@ -88,7 +98,7 @@ details at `/settings` before using this for a real incident.
 
 Recommended: **Railway** (railway.com). It's the least fiddly option that
 actually keeps your SQLite data between requests and doesn't cold-start
-mid-demo — both real problems on most free tiers in 2026.
+mid-deploy.
 
 1. Push this folder to a new GitHub repo.
 2. In Railway: New Project → Deploy from GitHub repo → pick the repo.
@@ -99,8 +109,8 @@ mid-demo — both real problems on most free tiers in 2026.
    - `PRAHARI_PASSWORD` = a real password
    - `PRAHARI_DB_PATH` = `/data/prahari.db`
 4. In the service's **Volumes** tab, attach a volume mounted at `/data` —
-   this is what makes incident data survive restarts and redeploys instead
-   of vanishing.
+   this is what makes incident data survive restarts and redeployments
+   instead of vanishing.
 5. Railway gives you a live `*.up.railway.app` URL immediately. A custom
    domain can be attached later under Settings → Domains for free (you'd
    just need to own the domain itself, e.g. from GoDaddy or Namecheap).
@@ -111,21 +121,20 @@ on a customer call, rather than a cold-start blank screen or a demo where
 last week's test incidents have silently disappeared.
 
 
-
 ## Project layout
 
 ```
-Procfile               start command for Railway/Render/Heroku-style hosts
+Procfile                  start command for Railway/Render/Heroku-style hosts
 app/
-  main.py            FastAPI routes
-  auth.py             HTTP Basic Auth gate
-  db.py               SQLite access (schema.sql defines the tables)
-  compliance.py        the dual-clock engine -- this is the core IP
-  reports.py            builds CERT-In / DPDP report content from an incident
-  reference_data.py    CERT-In's official incident category list
-templates/            Jinja2 templates (server-rendered, no JS framework)
-static/                style.css + clock.js (the live countdown ticking)
-schema.sql             SQLite schema, Postgres-portable if this needs to scale
+  main.py                 FastAPI routes
+  auth.py                 HTTP Basic Auth gate
+  db.py                   SQLite access (schema.sql defines the tables)
+  compliance.py           the dual-clock engine -- this is the core IP
+  reports.py              builds CERT-In / DPDP report content from an incident
+  reference_data.py       CERT-In's official incident category list
+templates/                Jinja2 templates (server-rendered, no JS framework)
+static/                   style.css + clock.js (the live countdown ticking)
+schema.sql                SQLite schema, Postgres-portable if this needs to scale
 ```
 
 ## Suggested next steps for whoever picks this up
@@ -140,3 +149,7 @@ schema.sql             SQLite schema, Postgres-portable if this needs to scale
    wired in as a real "submit" action instead of "generate for manual filing" —
    that's the natural v2 once the report content itself has been validated
    against a few real filings.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
